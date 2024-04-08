@@ -39,7 +39,8 @@ model Book {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  author Author @relation(fields: [author_id], references: [id])
+  author    Author    @relation(fields: [author_id], references: [id])
+  publisher Publisher @relation(fields: [publisher_id], references: [id])
 
   @@map("books")
 }
@@ -50,7 +51,19 @@ model Author {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Book Book[]
+  books Book[]
 
   @@map("authors")
+}
+
+model Publisher {
+  id        String   @id @db.Char(36)
+  name      String   @db.VarChar(100)
+  location  String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  books Book[]
+
+  @@map("publishers")
 }
