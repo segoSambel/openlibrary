@@ -1,0 +1,53 @@
+@startuml
+
+entity "Book" {
+  + book_id : char(36)
+  --
+  title : varchar
+  category : varchar
+  cover : varchar
+  overview : text
+  isbn : varchar
+  publication_year : int
+  publisher_id : int
+  author_id : char(36)
+}
+
+entity "Author" {
+  + author_id : char(36)
+  --
+  name : varchar
+}
+
+entity "Publisher" {
+  + publisher_id : int
+  --
+  name : varchar
+  location : varchar
+}
+
+entity "User" {
+  + user_id : char(36)
+  --
+  password : varchar
+  email : varchar
+  name : varchar
+  address : varchar
+  phone : varchar
+}
+
+entity "Loan" {
+  + loan_id : char(36)
+  --
+  user_id : char(36)
+  book_id : char(36)
+  borrow_date : date
+  return_date : date
+}
+
+Book ||--o{ Author : "written by"
+Book }|--o{ Publisher : "published by"
+User }|--o{ Loan : "makes"
+Book }|--o{ Loan : "is borrowed by"
+
+@enduml
