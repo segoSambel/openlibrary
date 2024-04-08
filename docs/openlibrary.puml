@@ -45,8 +45,8 @@ entity "Loan" {
   return_date : date
 }
 
-Book ||--o{ Author : "written by"
-Book }|--o{ Publisher : "published by"
+Book }|--o| Author : "written by"
+Book }|--o| Publisher : "published by"
 User }|--o{ Loan : "makes"
 Book }|--o{ Loan : "is borrowed by"
 
