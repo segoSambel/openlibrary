@@ -41,3 +41,40 @@ describe('POST /api/users', () => {
         expect(response.body.message).toBe("User created successfully");
     });
 });
+
+describe('POST /api/auth/login', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+    });
+
+    it('should be able to login', async () => {
+        const response = await supertest(web)
+            .post('/api/auth/login')
+            .send({
+                email: "test@example.com",
+                password: "password"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.token).toBeDefined();
+    });
+
+    it('should failed to login if credential is wrong or not exist', async () => {
+        const response = await supertest(web)
+            .post('/api/auth/login')
+            .send({
+                email: "test@example.com",
+                password: "salahpoll"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(401);
+        expect(response.body.errors).toBeDefined();
+    });
+});

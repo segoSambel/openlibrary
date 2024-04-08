@@ -18,6 +18,11 @@ export type CreateUserRequest = {
     phone: string;
 };
 
+export type LoginUserRequest = {
+    email: string;
+    password: string;
+};
+
 export function toUserResponse(data: User): UserResponse {
     return {
         id: data.id,
