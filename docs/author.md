@@ -1,4 +1,4 @@
-# Book API Spec
+# Author API Spec
 
 ## Add Author API
 
