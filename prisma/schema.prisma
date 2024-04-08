@@ -39,5 +39,18 @@ model Book {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
+  author Author @relation(fields: [author_id], references: [id])
+
   @@map("books")
+}
+
+model Author {
+  id        String   @id @db.Char(36)
+  name      String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Book Book[]
+
+  @@map("authors")
 }
