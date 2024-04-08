@@ -48,7 +48,7 @@ Response Body Success :
     "id": "char(36)",
     "name": "Author Name",
     "created_at": "2020-01-01T00:00",
-    "updated_at": "2020-01-01T00:00",
+    "updated_at": "2020-01-01T00:00"
   }
 }
 ```

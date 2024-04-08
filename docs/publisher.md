@@ -50,7 +50,7 @@ Response Body Success :
     "name": "Publisher Name",
     "location": "Publisher Location",
     "created_at": "2020-01-01T00:00",
-    "updated_at": "2020-01-01T00:00",
+    "updated_at": "2020-01-01T00:00"
   }
 }
 ```
