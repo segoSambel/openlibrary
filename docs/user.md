@@ -137,7 +137,8 @@ Response Body Error :
 }
 ```
 
-## Logout User API
+## Logout User API 
+> THIS FEATURE IS YET TO BE IMPLEMENTED
 
 Endpoint : DELETE /api/auth/logout
 
