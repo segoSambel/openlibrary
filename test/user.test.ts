@@ -78,3 +78,40 @@ describe('POST /api/auth/login', () => {
         expect(response.body.errors).toBeDefined();
     });
 });
+
+describe('GET /api/users/current', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+    });
+
+    it('should be able to get user', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .get('/api/users/current')
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.email).toBe('test@example.com')
+        expect(response.body.data.name).toBe('test')
+        expect(response.body.data.address).toBe('test')
+        expect(response.body.data.phone).toBe('1234567890')
+
+    });
+
+    it('should failed to get user if token is invalid', async () => {
+        const response = await supertest(web)
+            .get('/api/users/current')
+            .set('Authorization', `Bearer salahpollll`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(401);
+        expect(response.error).toBeDefined();
+    });
+});

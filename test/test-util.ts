@@ -1,6 +1,7 @@
 import {prismaClient} from "../src/application/database";
 import {v4 as uuid} from "uuid";
 import bcrypt from "bcrypt";
+import {JwtUtil} from "../src/util/jwt-util";
 
 export class UserTest {
     static async delete() {
@@ -22,5 +23,13 @@ export class UserTest {
                 phone: "1234567890"
             }
         })
+    }
+
+    static async getToken(): Promise<string> {
+        const payload = {
+            email: "test@example.com",
+            name: "test"
+        };
+        return await JwtUtil.sign(payload)
     }
 }

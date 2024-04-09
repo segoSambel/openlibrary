@@ -1,12 +1,12 @@
-import {CreateUserRequest, LoginUserRequest} from "../model/user-model";
-import {Validation} from "../validation/validation";
+import {CreateUserRequest, LoginUserRequest, toUserResponse, UserResponse} from "../model/user-model";
 import {UserValidation} from "../validation/user-validation";
-import {prismaClient} from "../application/database";
 import {ResponseError} from "../error/response-error";
-import bcrypt from "bcrypt";
-import * as jose from "jose";
-import {v4 as uuid} from "uuid";
+import {prismaClient} from "../application/database";
+import {Validation} from "../validation/validation";
 import {JwtUtil} from "../util/jwt-util";
+import {User} from "@prisma/client";
+import bcrypt from "bcrypt";
+import {v4 as uuid} from "uuid";
 
 export class UserService {
 
@@ -68,4 +68,7 @@ export class UserService {
         return await JwtUtil.sign(payload);
     }
 
+    static async get(user: User): Promise<UserResponse> {
+        return toUserResponse(user);
+    }
 }
