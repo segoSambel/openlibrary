@@ -23,6 +23,13 @@ export type LoginUserRequest = {
     password: string;
 };
 
+export type UpdateUserRequest = {
+    name?: string;
+    password?: string;
+    address?: string;
+    phone?: string;
+};
+
 export function toUserResponse(data: User): UserResponse {
     return {
         id: data.id,

@@ -1,7 +1,6 @@
 import * as jose from 'jose';
-import {JWTPayload} from "jose";
+import {JWTPayload} from 'jose';
 import {ResponseError} from "../error/response-error";
-import winston from "winston";
 
 export class JwtUtil {
 
@@ -31,7 +30,7 @@ export class JwtUtil {
             return payload;
         } catch (error) {
             if (error instanceof jose.errors.JWSInvalid || error instanceof jose.errors.JWSInvalid) {
-                throw new ResponseError(401, 'Token JWT tidak valid');
+                throw new ResponseError(401, 'Unauthorized');
             } else {
                 throw new ResponseError(500, 'Internal Server Error');
             }

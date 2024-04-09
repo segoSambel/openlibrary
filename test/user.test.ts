@@ -2,6 +2,7 @@ import supertest from "supertest";
 import {web} from "../src/application/web";
 import {logger} from "../src/application/logging";
 import {UserTest} from "./test-util";
+import bcrypt from "bcrypt";
 
 describe('POST /api/users', () => {
 
@@ -113,5 +114,112 @@ describe('GET /api/users/current', () => {
         logger.debug(response.body);
         expect(response.status).toBe(401);
         expect(response.error).toBeDefined();
+    });
+});
+
+describe('PATCH /api/users/current', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+    });
+
+    it('should failed to update if request is invalid', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: "",
+                password: "",
+                address: "",
+                phone: ""
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(400);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should failed to update if request token is invalid', async () => {
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer salahpollll`)
+            .send({
+                name: "test_nama_baru",
+                password: "test_password_baru",
+                address: "test_address_baru",
+                phone: "test_0999"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(401);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to update user name', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: "test_nama_baru"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.name).toBe("test_nama_baru");
+    });
+
+    it('should success to update user address', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                address: "test_address_baru"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.address).toBe("test_address_baru");
+    });
+
+    it('should success to update user phone', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                phone: "test_09999"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.phone).toBe("test_09999");
+    });
+
+    it('should success to update user password', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                password: "test_password_baru"
+            });
+
+        const user = await UserTest.get();
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(await bcrypt.compare("test_password_baru", user.password)).toBe(true)
     });
 });

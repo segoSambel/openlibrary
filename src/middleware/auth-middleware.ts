@@ -2,7 +2,6 @@ import {NextFunction, Response} from 'express';
 import {JwtUtil} from "../util/jwt-util";
 import {prismaClient} from "../application/database";
 import {UserRequest} from "../type/user-request";
-import winston from "winston";
 
 export const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction) => {
     const token = req.get('Authorization')?.startsWith('Bearer ') ? req.get('Authorization')?.substring(7) : null;
