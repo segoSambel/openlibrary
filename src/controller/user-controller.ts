@@ -49,6 +49,7 @@ export class UserController {
             const response = await UserService.update(req.user!, request);
 
             res.status(200).json({
+                message: "User updated successfully",
                 data: response
             });
         } catch (e) {

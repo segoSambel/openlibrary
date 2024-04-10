@@ -173,6 +173,7 @@ describe('PATCH /api/users/current', () => {
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
+        expect(response.body.message).toBe("User updated successfully");
         expect(response.body.data.name).toBe("test_nama_baru");
     });
 
@@ -188,6 +189,7 @@ describe('PATCH /api/users/current', () => {
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
+        expect(response.body.message).toBe("User updated successfully");
         expect(response.body.data.address).toBe("test_address_baru");
     });
 
@@ -203,6 +205,7 @@ describe('PATCH /api/users/current', () => {
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
+        expect(response.body.message).toBe("User updated successfully");
         expect(response.body.data.phone).toBe("test_09999");
     });
 
@@ -220,6 +223,7 @@ describe('PATCH /api/users/current', () => {
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
+        expect(response.body.message).toBe("User updated successfully");
         expect(await bcrypt.compare("test_password_baru", user.password)).toBe(true)
     });
 });
