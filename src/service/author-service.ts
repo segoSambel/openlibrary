@@ -1,4 +1,4 @@
-import {AuthorResponse, CreateAuthorRequest, toAuthorResponse} from "../model/author-model";
+import {AuthorResponse, CreateAuthorRequest, toAuthorResponse, UpdateAuthorRequest} from "../model/author-model";
 import {Validation} from "../validation/validation";
 import {AuthorValidation} from "../validation/author-validation";
 import {prismaClient} from "../application/database";
@@ -30,6 +30,33 @@ export class AuthorService {
         }
 
         return toAuthorResponse(author);
+    }
+
+    static async update(request: UpdateAuthorRequest): Promise<AuthorResponse> {
+        const updateRequest = Validation.validate(AuthorValidation.UPDATE, request);
+
+        const author = await prismaClient.author.findUnique({
+            where: {
+                id: updateRequest.id
+            }
+        });
+
+        if (!author) {
+            throw new ResponseError(404, "Cannot find author");
+        }
+
+        if (updateRequest.name) {
+            author.name = updateRequest.name
+        }
+
+        const response = await prismaClient.author.update({
+            where: {
+                id: author.id
+            },
+            data: author
+        });
+
+        return toAuthorResponse(response);
     }
 
 }

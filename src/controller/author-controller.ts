@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import {CreateAuthorRequest} from "../model/author-model";
+import {CreateAuthorRequest, UpdateAuthorRequest} from "../model/author-model";
 import {AuthorService} from "../service/author-service";
 
 export class AuthorController {
@@ -23,6 +23,21 @@ export class AuthorController {
             const response = await AuthorService.get(authorId);
 
             res.status(200).json({
+                data: response
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            const request: UpdateAuthorRequest = req.body as UpdateAuthorRequest;
+            request.id = req.params.id;
+            const response = await AuthorService.update(request);
+
+            res.status(200).json({
+                message: "Author updated successfully",
                 data: response
             });
         } catch (e) {

@@ -11,6 +11,11 @@ export type CreateAuthorRequest = {
     name: string
 }
 
+export type UpdateAuthorRequest = {
+    id: string,
+    name: string
+}
+
 export function toAuthorResponse(author: Author): AuthorResponse {
     return {
         id: author.id,

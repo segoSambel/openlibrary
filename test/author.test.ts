@@ -49,12 +49,12 @@ describe('POST /api/authors', () => {
 describe('GET /api/authors', () => {
 
     beforeEach(async () => {
-        await AuthorTest.create();
         await UserTest.create();
+        await AuthorTest.create();
     });
 
     afterEach(async () => {
-        await AuthorTest.delete()
+        await AuthorTest.delete();
         await UserTest.delete();
     });
 
@@ -84,4 +84,52 @@ describe('GET /api/authors', () => {
         expect(response.body.data.name).toBe(author.name);
     });
 
+});
+
+describe('PUT /api/authors', () => {
+
+    beforeEach( async() => {
+        await UserTest.create();
+        await AuthorTest.create();
+    });
+
+    afterEach(async () => {
+        await AuthorTest.delete();
+        await UserTest.delete();
+    });
+
+    it('should failed to update author if request is invalid', async () => {
+        const token = await UserTest.getToken();
+        const author = await AuthorTest.get();
+
+        const response = await supertest(web)
+            .put(`/api/authors/${author.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: ""
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(400);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to update author if request is invalid', async () => {
+        const token = await UserTest.getToken();
+        const author = await AuthorTest.get();
+
+        const response = await supertest(web)
+            .put(`/api/authors/${author.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: "test_author_baru"
+            });
+
+        await AuthorTest.delete("test_author_baru");
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Author updated successfully");
+        expect(response.body.data.name).toBe("test_author_baru");
+    });
 });

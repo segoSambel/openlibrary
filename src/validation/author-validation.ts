@@ -6,4 +6,9 @@ export class AuthorValidation {
         name: z.string().min(1).max(100)
     })
 
+    static UPDATE: ZodType = z.object({
+        id: z.string().uuid(),
+        name: z.string().min(1).max(100)
+    });
+
 }

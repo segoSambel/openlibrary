@@ -50,10 +50,10 @@ export class UserTest {
 }
 
 export class AuthorTest {
-    static async delete() {
+    static async delete(name: string = "test_author") {
         await prismaClient.author.deleteMany({
             where: {
-                name: "test_author"
+                name: name
             }
         });
     }
