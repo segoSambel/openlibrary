@@ -16,11 +16,6 @@ import {v4 as uuid} from "uuid";
 
 export class UserService {
 
-    constructor() {
-        require('dotenv').config()
-    }
-
-
     static async register(request: CreateUserRequest): Promise<void> {
         const registerRequest = Validation.validate(UserValidation.REGISTER, request);
 

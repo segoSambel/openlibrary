@@ -10,7 +10,7 @@ export class UserTest {
             where: {
                 email: "test@example.com"
             }
-        })
+        });
     }
 
     static async create() {
@@ -23,7 +23,7 @@ export class UserTest {
                 address: "test",
                 phone: "1234567890"
             }
-        })
+        });
     }
 
     static async get(): Promise<User> {
@@ -47,4 +47,15 @@ export class UserTest {
         };
         return await JwtUtil.sign(payload)
     }
+}
+
+export class AuthorTest {
+    static async delete() {
+        await prismaClient.author.deleteMany({
+            where: {
+                name: "test_author"
+            }
+        });
+    }
+
 }
