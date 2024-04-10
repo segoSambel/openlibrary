@@ -12,3 +12,4 @@ apiRouter.patch('/api/users/current', UserController.update);
 
 // Author API
 apiRouter.post('/api/authors', AuthorController.create);
+apiRouter.get('/api/authors/:id', AuthorController.get);

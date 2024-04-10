@@ -2,7 +2,7 @@ import {prismaClient} from "../src/application/database";
 import {v4 as uuid} from "uuid";
 import bcrypt from "bcrypt";
 import {JwtUtil} from "../src/util/jwt-util";
-import {User} from "@prisma/client";
+import {Author, User} from "@prisma/client";
 
 export class UserTest {
     static async delete() {
@@ -58,4 +58,26 @@ export class AuthorTest {
         });
     }
 
+    static async create() {
+        await prismaClient.author.create({
+            data: {
+                id: uuid(),
+                name: "test_author"
+            }
+        })
+    }
+
+    static async get(): Promise<Author> {
+        const author = await prismaClient.author.findFirst({
+            where: {
+                name: "test_author"
+            }
+        });
+
+        if (!author) {
+            throw new Error("Author not found");
+        }
+
+        return author;
+    }
 }

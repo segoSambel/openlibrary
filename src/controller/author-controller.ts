@@ -17,4 +17,17 @@ export class AuthorController {
         }
     }
 
+    static async get(req: Request, res: Response, next: NextFunction) {
+        try {
+            const authorId = req.params.id
+            const response = await AuthorService.get(authorId);
+
+            res.status(200).json({
+                data: response
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
+
 }

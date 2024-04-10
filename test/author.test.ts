@@ -45,3 +45,43 @@ describe('POST /api/authors', () => {
     });
 
 });
+
+describe('GET /api/authors', () => {
+
+    beforeEach(async () => {
+        await AuthorTest.create();
+        await UserTest.create();
+    });
+
+    afterEach(async () => {
+        await AuthorTest.delete()
+        await UserTest.delete();
+    });
+
+    it('should failed to get author if author id is not exist', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .get('/api/authors/id_yang_salah')
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to get author if author id is exist', async () => {
+        const token = await UserTest.getToken();
+        const author = await AuthorTest.get();
+
+        const response = await supertest(web)
+            .get(`/api/authors/${author.id}`)
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.id).toBe(author.id);
+        expect(response.body.data.name).toBe(author.name);
+    });
+
+});

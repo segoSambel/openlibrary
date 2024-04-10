@@ -37,7 +37,7 @@ export function toUserResponse(data: User): UserResponse {
         name: data.name,
         address: data.address,
         phone: data.phone,
-        created_at: data.createdAt.toString(),
-        updated_at: data.updatedAt.toString(),
+        created_at: data.createdAt.toISOString(),
+        updated_at: data.updatedAt.toISOString(),
     };
 }
