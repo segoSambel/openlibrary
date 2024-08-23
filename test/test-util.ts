@@ -2,7 +2,7 @@ import {prismaClient} from "../src/application/database";
 import {v4 as uuid} from "uuid";
 import bcrypt from "bcrypt";
 import {JwtUtil} from "../src/util/jwt-util";
-import {Author, User} from "@prisma/client";
+import {Author, Publisher, User} from "@prisma/client";
 
 export class UserTest {
     static async delete() {
@@ -79,5 +79,39 @@ export class AuthorTest {
         }
 
         return author;
+    }
+}
+
+export class PublisherTest {
+    static async delete(name: string = "test_publisher") {
+        await prismaClient.publisher.deleteMany({
+            where: {
+                name: name
+            }
+        })
+    }
+
+    static async create() {
+        await prismaClient.publisher.create({
+            data: {
+                id: uuid(),
+                name: "test_publisher",
+                location: "test_publisher_location"
+            }
+        });
+    }
+
+    static async get(): Promise<Publisher> {
+        const publisher = await prismaClient.publisher.findFirst({
+            where: {
+                name: "test_publisher"
+            }
+        });
+
+        if (!publisher) {
+            throw new Error("Publisher not found");
+        }
+
+        return publisher
     }
 }
