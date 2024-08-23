@@ -114,7 +114,7 @@ describe('PUT /api/authors', () => {
         expect(response.body.errors).toBeDefined();
     });
 
-    it('should success to update author if request is invalid', async () => {
+    it('should success to update author if request is valid', async () => {
         const token = await UserTest.getToken();
         const author = await AuthorTest.get();
 
@@ -131,5 +131,43 @@ describe('PUT /api/authors', () => {
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Author updated successfully");
         expect(response.body.data.name).toBe("test_author_baru");
+    });
+});
+
+describe('DELETE /api/authors', () => {
+    
+    beforeEach( async() => {
+        await UserTest.create();
+        await AuthorTest.create();
+    });
+
+    afterEach(async () => {
+        await AuthorTest.delete();
+        await UserTest.delete();
+    });
+
+    it('should failed to remove authors id if authorId is invalid', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .delete(`/api/authors/invalid_id`)
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to delete author if authorId is valid', async () => {
+        const token = await UserTest.getToken();
+        const author = await AuthorTest.get();
+
+        const response = await supertest(web)
+            .delete(`/api/authors/${author.id}`)
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Author deleted successfully");
     });
 });

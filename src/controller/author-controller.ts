@@ -45,4 +45,17 @@ export class AuthorController {
         }
     }
 
+    static async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const authorId = req.params.id;
+            await AuthorService.delete(authorId);
+
+            res.status(200).json({
+                message: "Author deleted successfully"
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
+
 }

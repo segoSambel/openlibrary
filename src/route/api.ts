@@ -14,3 +14,4 @@ apiRouter.patch('/api/users/current', UserController.update);
 apiRouter.post('/api/authors', AuthorController.create);
 apiRouter.get('/api/authors/:id', AuthorController.get);
 apiRouter.put('/api/authors/:id', AuthorController.update);
+apiRouter.delete('/api/authors/:id', AuthorController.delete);

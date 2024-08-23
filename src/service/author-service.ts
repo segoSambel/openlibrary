@@ -59,4 +59,25 @@ export class AuthorService {
         return toAuthorResponse(response);
     }
 
+    static async delete(authorId: string): Promise<AuthorResponse> {
+
+        const author = await prismaClient.author.findUnique({
+            where: {
+                id: authorId
+            }
+        });
+
+        if (!author) {
+            throw new ResponseError(404, "Failed to delete author");
+        }
+
+        await prismaClient.author.delete({
+            where: {
+                id: authorId
+            }
+        });
+
+        return toAuthorResponse(author);
+    }
+
 }
