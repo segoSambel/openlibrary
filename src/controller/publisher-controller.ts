@@ -15,4 +15,17 @@ export class PublisherController {
             next(e);
         }
     }
+
+    static async get(req: Request, res: Response, next: NextFunction) {
+        try {
+            const publisherId = req.params.id;
+            const response = await PublisherService.get(publisherId);
+
+            res.status(200).json({
+                data: response
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
 }
