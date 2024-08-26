@@ -99,7 +99,7 @@ describe('PUT /api/publishers', () => {
         await PublisherTest.delete();
     });
 
-    it('should failed to update data if requeest is invalid', async () => {
+    it('should failed to update data if request is invalid', async () => {
         const token = await UserTest.getToken();
         const publisher = await PublisherTest.get();
 
@@ -116,7 +116,7 @@ describe('PUT /api/publishers', () => {
         expect(response.body.errors).toBeDefined();
     });
 
-    it('should success to update publisher name', async () => {
+    it('should success to update publisher if data is valid', async () => {
         const token = await UserTest.getToken();
         const publisher = await PublisherTest.get();
 
@@ -124,27 +124,13 @@ describe('PUT /api/publishers', () => {
             .put(`/api/publishers/${publisher.id}`)
             .set('Authorization', `Bearer ${token}`)
             .send({
-                name: "updated_name"
+                name: "updated_name",
+                location: "updated_location",
             });
 
         logger.debug(response.body);
         expect(response.status).toBe(200);
         expect(response.body.data.name).toBe("updated_name");
-    });
-
-    it('should success to update publisher location', async () => {
-        const token = await UserTest.getToken();
-        const publisher = await PublisherTest.get();
-
-        const response = await supertest(web)
-            .put(`/api/publishers/${publisher.id}`)
-            .set('Authorization', `Bearer ${token}`)
-            .send({
-                location: "updated_location"
-            });
-
-        logger.debug(response.body);
-        expect(response.status).toBe(200);
         expect(response.body.data.location).toBe("updated_location");
     });
 });
