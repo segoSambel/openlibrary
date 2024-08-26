@@ -2,7 +2,7 @@ import {prismaClient} from "../src/application/database";
 import {v4 as uuid} from "uuid";
 import bcrypt from "bcrypt";
 import {JwtUtil} from "../src/util/jwt-util";
-import {Author, Publisher, User} from "@prisma/client";
+import {Author, Book, Publisher, User} from "@prisma/client";
 
 export class UserTest {
     static async delete() {
@@ -113,5 +113,45 @@ export class PublisherTest {
         }
 
         return publisher
+    }
+}
+
+export class BookTest {
+    static async delete(title: string = "test_book") {
+        await prismaClient.book.deleteMany({
+            where: {
+                title: title
+            }
+        });
+    }
+
+    static async create(publisherId: string, authorId: string) {
+        await prismaClient.book.create({
+            data: {
+                id: uuid(),
+                title: "test_book",
+                category: "test_book_category",
+                cover: "test_book_cover",
+                overview: "test_book_overview",
+                isbn: "test_book_isbn",
+                publication_year: "2024",
+                publisher_id: publisherId,
+                author_id: authorId
+            }
+        });
+    }
+
+    static async get(): Promise<Book> {
+        const book = await prismaClient.book.findFirst({
+            where: {
+                title: "test_book"
+            }
+        });
+
+        if (!book) {
+            throw new Error("Book not found");
+        }
+
+        return book
     }
 }

@@ -3,6 +3,7 @@ import {authMiddleware} from "../middleware/auth-middleware";
 import {UserController} from "../controller/user-controller";
 import {AuthorController} from "../controller/author-controller";
 import {PublisherController} from "../controller/publisher-controller";
+import {BookController} from "../controller/book-controller";
 
 export const apiRouter = express.Router();
 apiRouter.use(authMiddleware);
@@ -22,3 +23,6 @@ apiRouter.post('/api/publishers', PublisherController.create);
 apiRouter.get('/api/publishers/:id', PublisherController.get);
 apiRouter.put('/api/publishers/:id', PublisherController.update);
 apiRouter.delete('/api/publishers/:id', PublisherController.delete);
+
+// book API
+apiRouter.post('/api/books', BookController.create);
