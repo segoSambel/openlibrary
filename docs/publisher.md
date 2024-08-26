@@ -83,7 +83,14 @@ Response Body Success :
 
 ```json
 {
-  "message": "Publisher updated successfully"
+    "message": "Publisher updated successfully",
+    "data": {
+        "id": "char(36)",
+        "name": "Publisher Name",
+        "location": "Publisher Location",
+        "created_at": "2020-01-01T00:00",
+        "updated_at": "2020-01-01T00:00"
+    }
 }
 ```
 
