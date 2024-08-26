@@ -26,3 +26,4 @@ apiRouter.delete('/api/publishers/:id', PublisherController.delete);
 
 // book API
 apiRouter.post('/api/books', BookController.create);
+apiRouter.get('/api/books/:id', BookController.get);

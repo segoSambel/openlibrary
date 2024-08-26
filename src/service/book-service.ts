@@ -3,6 +3,7 @@ import {Validation} from "../validation/validation";
 import {BookValidation} from "../validation/book-validation";
 import {prismaClient} from "../application/database";
 import {v4 as uuid} from "uuid";
+import {ResponseError} from "../error/response-error";
 
 export class BookService {
 
@@ -25,5 +26,20 @@ export class BookService {
         });
 
         return toBookResponse(book)
+    }
+
+    static async get(bookId: string): Promise<BookResponse> {
+        const book = await prismaClient.book.findUnique({
+            where: {
+                id: bookId
+            },
+            include: {author: true, publisher: true}
+        });
+
+        if (!book) {
+            throw new ResponseError(404, "Book not found");
+        }
+
+        return toBookResponse(book);
     }
 }
