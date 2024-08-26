@@ -98,4 +98,22 @@ export class BookService {
 
         return toBookResponse(newBook);
     }
+
+    static async delete(bookId: string) {
+        const book = await prismaClient.book.findUnique({
+            where: {
+                id: bookId
+            }
+        });
+
+        if (!book) {
+            throw new ResponseError(404, "Cannot find book");
+        }
+
+        await prismaClient.book.delete({
+            where: {
+                id: bookId
+            }
+        });
+    }
 }

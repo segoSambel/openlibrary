@@ -79,7 +79,7 @@ describe('GET /api/books', () => {
         await PublisherTest.create();
         await AuthorTest.create();
 
-        Promise.all([await PublisherTest.get(), await AuthorTest.get()]).then(async (values) => {
+        await Promise.all([await PublisherTest.get(), await AuthorTest.get()]).then(async (values) => {
             await BookTest.create(values[0].id, values[1].id);
         }).catch((e) => {
             throw new Error("Failed to start test")
@@ -132,7 +132,7 @@ describe('PUT /api/books', () => {
         await PublisherTest.create();
         await AuthorTest.create();
 
-        Promise.all([await PublisherTest.get(), await AuthorTest.get()]).then(async (values) => {
+        await Promise.all([await PublisherTest.get(), await AuthorTest.get()]).then(async (values) => {
             await BookTest.create(values[0].id, values[1].id);
         }).catch((e) => {
             throw new Error("Failed to start test")
@@ -189,6 +189,8 @@ describe('PUT /api/books', () => {
                 authorId: author.id
             });
 
+        await BookTest.delete("updated_test_title")
+
         logger.debug(response.body);
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Book updated successfully");
@@ -200,5 +202,52 @@ describe('PUT /api/books', () => {
         expect(response.body.data.publicationYear).toBe("2024");
         expect(response.body.data.publisher.id).toBe(publisher.id);
         expect(response.body.data.author.id).toBe(author.id);
+    });
+});
+
+describe('DELETE /api/books', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+        await PublisherTest.create();
+        await AuthorTest.create();
+
+        await Promise.all([await PublisherTest.get(), await AuthorTest.get()]).then(async (values) => {
+            await BookTest.create(values[0].id, values[1].id);
+        }).catch((e) => {
+            throw new Error("Failed to start test")
+        });
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+        await PublisherTest.delete();
+        await AuthorTest.delete();
+        await BookTest.delete();
+    });
+
+    it('should failed to delete book if book id is invalid', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .delete('/api/books/id_yang_salah')
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to delete book if book id is valid', async () => {
+        const token = await UserTest.getToken();
+        const book = await BookTest.get();
+
+        const response = await supertest(web)
+            .delete(`/api/books/${book.id}`)
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Book deleted successfully");
     });
 });
