@@ -12,4 +12,16 @@ export class BookValidation {
         publisherId: z.string().uuid(),
         authorId: z.string().uuid()
     });
+
+    static readonly UPDATE: ZodType = z.object({
+        id: z.string().uuid(),
+        title: z.string().min(1).max(100).optional(),
+        category: z.string().min(1).max(100).optional(),
+        cover: z.string().min(1).max(255).optional(),
+        overview: z.string().min(1).optional(),
+        isbn: z.string().min(1).max(20).optional(),
+        publicationYear: z.string().length(4).optional(),
+        publisherId: z.string().uuid().optional(),
+        authorId: z.string().uuid().optional()
+    });
 }

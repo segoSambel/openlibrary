@@ -23,6 +23,18 @@ export type CreateBookRequest = {
     authorId: string
 }
 
+export type UpdateBookRequest = {
+    id: string,
+    title: string,
+    category: string,
+    cover: string,
+    overview: string,
+    isbn: string,
+    publicationYear: string,
+    publisherId: string,
+    authorId: string
+}
+
 export function toBookResponse(data: Prisma.BookGetPayload<{ include: {author: true, publisher: true} }>): BookResponse {
     return {
         id: data.id,
