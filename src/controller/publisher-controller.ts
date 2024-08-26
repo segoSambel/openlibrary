@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from "express";
-import {CreatePublisherRequest} from "../model/publisher-model";
+import {NextFunction, Request, Response} from "express";
+import {CreatePublisherRequest, UpdatePublisherRequest} from "../model/publisher-model";
 import {PublisherService} from "../service/publisher-service";
 
 export class PublisherController {
@@ -22,6 +22,22 @@ export class PublisherController {
             const response = await PublisherService.get(publisherId);
 
             res.status(200).json({
+                data: response
+            });
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    static async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            const request: UpdatePublisherRequest = req.body as UpdatePublisherRequest;
+            request.id = req.params.id;
+
+            const response = await PublisherService.update(request);
+
+            res.status(200).json({
+                message: "Publisher updated successfully",
                 data: response
             });
         } catch (e) {

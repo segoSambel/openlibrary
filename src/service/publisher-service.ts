@@ -1,4 +1,9 @@
-import {CreatePublisherRequest, PublisherResponse, toPublisherResponse} from "../model/publisher-model";
+import {
+    CreatePublisherRequest,
+    PublisherResponse,
+    toPublisherResponse,
+    UpdatePublisherRequest
+} from "../model/publisher-model";
 import {prismaClient} from "../application/database";
 import {v4 as uuid} from "uuid";
 import {Validation} from "../validation/validation";
@@ -31,5 +36,36 @@ export class PublisherService {
         }
 
         return toPublisherResponse(publisher);
+    }
+
+    static async update(request: UpdatePublisherRequest): Promise<PublisherResponse> {
+        const updateRequest = Validation.validate(PublisherValidation.UPDATE, request);
+
+        const publisher = await prismaClient.publisher.findUnique({
+            where: {
+                id: updateRequest.id
+            }
+        });
+
+        if (!publisher) {
+            throw new ResponseError(404, "Cannot find publisher");
+        }
+
+        if (updateRequest.name) {
+            publisher.name = updateRequest.name
+        }
+
+        if (updateRequest.location) {
+            publisher.location = updateRequest.location
+        }
+
+        const response = await prismaClient.publisher.update({
+            where: {
+                id: publisher.id
+            },
+            data: publisher
+        });
+
+        return toPublisherResponse(response);
     }
 }

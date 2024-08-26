@@ -86,3 +86,65 @@ describe('GET /api/publishers', () => {
         expect(response.body.data.location).toBe(publisher.location);
     });
 });
+
+describe('PUT /api/publishers', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+        await PublisherTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+        await PublisherTest.delete();
+    });
+
+    it('should failed to update data if requeest is invalid', async () => {
+        const token = await UserTest.getToken();
+        const publisher = await PublisherTest.get();
+
+        const response = await supertest(web)
+            .put(`/api/publishers/${publisher.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: "",
+                location: ""
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(400);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to update publisher name', async () => {
+        const token = await UserTest.getToken();
+        const publisher = await PublisherTest.get();
+
+        const response = await supertest(web)
+            .put(`/api/publishers/${publisher.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                name: "updated_name"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.name).toBe("updated_name");
+    });
+
+    it('should success to update publisher location', async () => {
+        const token = await UserTest.getToken();
+        const publisher = await PublisherTest.get();
+
+        const response = await supertest(web)
+            .put(`/api/publishers/${publisher.id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                location: "updated_location"
+            });
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.data.location).toBe("updated_location");
+    });
+});

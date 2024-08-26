@@ -13,6 +13,12 @@ export type CreatePublisherRequest = {
     location: string;
 }
 
+export type UpdatePublisherRequest = {
+    id: string,
+    name: string,
+    location: string,
+};
+
 export function toPublisherResponse(data: Publisher): PublisherResponse {
     return {
         id: data.id,

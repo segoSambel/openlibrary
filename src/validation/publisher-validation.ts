@@ -7,4 +7,10 @@ export class PublisherValidation {
         location: z.string().min(1).max(100)
     });
 
+    static readonly UPDATE: ZodType = z.object({
+        id: z.string().uuid(),
+        name: z.string().min(1).max(100).optional(),
+        location: z.string().min(1).max(100).optional()
+    });
+
 }
