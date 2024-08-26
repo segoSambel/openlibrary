@@ -67,7 +67,7 @@ describe('POST /api/books', () => {
         expect(response.body.data.overview).toBe("test_book_overview");
         expect(response.body.data.isbn).toBe("test_book_isbn");
         expect(response.body.data.publicationYear).toBe("2024");
-        expect(response.body.data.publisherId).toBe(publisher.id);
-        expect(response.body.data.authorId).toBe(author.id);
+        expect(response.body.data.publisher.id).toBe(publisher.id);
+        expect(response.body.data.author.id).toBe(author.id);
     });
 });

@@ -20,7 +20,8 @@ export class BookService {
                 publication_year: createRequest.publicationYear,
                 publisher_id: createRequest.publisherId,
                 author_id: createRequest.authorId
-            }
+            },
+            include: {author: true, publisher: true}
         });
 
         return toBookResponse(book)

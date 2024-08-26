@@ -27,7 +27,27 @@ Response Body Success :
 
 ```json
 {
-  "message": "Book added successfully"
+    "message": "Book added successfully",
+    "data": {
+        "id": "char(36)",
+        "title": "Laskar Pelangi",
+        "category": "Novel",
+        "cover": "https://example.com/cover.jpg",
+        "overview": "Lorem ipsum dolor sit amet",
+        "isbn": "9786020321293",
+        "publication_year": "2005",
+        "publisher_id": {
+            "id": "char(36)",
+            "name": "Bentang Pustaka",
+            "location": "Jakarta"
+        },
+        "author": {
+            "id": "char(36)",
+            "name": "Andrea Hirata"
+        },
+        "created_at": "2020-01-01T00:00",
+        "updated_at": "2020-01-01T00:00"
+    }
 }
 ```
 

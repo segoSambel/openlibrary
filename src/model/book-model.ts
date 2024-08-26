@@ -1,4 +1,4 @@
-import {Book} from "@prisma/client";
+import {Author, Book, Prisma, Publisher} from "@prisma/client";
 
 export type BookResponse = {
     id: string,
@@ -8,8 +8,8 @@ export type BookResponse = {
     overview: string,
     isbn: string,
     publicationYear: string,
-    publisherId: string,
-    authorId: string
+    publisher: Publisher,
+    author: Author,
 };
 
 export type CreateBookRequest = {
@@ -23,7 +23,7 @@ export type CreateBookRequest = {
     authorId: string
 }
 
-export function toBookResponse(data: Book): BookResponse {
+export function toBookResponse(data: Prisma.BookGetPayload<{ include: {author: true, publisher: true} }>): BookResponse {
     return {
         id: data.id,
         title: data.title,
@@ -32,7 +32,7 @@ export function toBookResponse(data: Book): BookResponse {
         overview: data.overview,
         isbn: data.isbn,
         publicationYear: data.publication_year,
-        publisherId: data.publisher_id,
-        authorId: data.author_id
+        publisher: data.publisher,
+        author: data.author
     }
 }
