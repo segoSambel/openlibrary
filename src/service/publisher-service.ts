@@ -68,4 +68,22 @@ export class PublisherService {
 
         return toPublisherResponse(response);
     }
+
+    static async delete(publisherId: string) {
+        const publisher = await prismaClient.publisher.findUnique({
+            where: {
+                id: publisherId
+            }
+        });
+
+        if (!publisher) {
+            throw new ResponseError(404, "Cannot find publisher");
+        }
+
+        await prismaClient.publisher.delete({
+            where: {
+                id: publisherId
+            }
+        });
+    }
 }

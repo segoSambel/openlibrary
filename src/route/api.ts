@@ -21,3 +21,4 @@ apiRouter.delete('/api/authors/:id', AuthorController.delete);
 apiRouter.post('/api/publishers', PublisherController.create);
 apiRouter.get('/api/publishers/:id', PublisherController.get);
 apiRouter.put('/api/publishers/:id', PublisherController.update);
+apiRouter.delete('/api/publishers/:id', PublisherController.delete);

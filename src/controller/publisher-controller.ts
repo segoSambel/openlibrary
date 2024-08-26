@@ -44,4 +44,17 @@ export class PublisherController {
             next(e)
         }
     }
+
+    static async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const publisherId = req.params.id
+            await PublisherService.delete(publisherId);
+
+            res.status(200).json({
+                message: "Publisher deleted successfully"
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
 }

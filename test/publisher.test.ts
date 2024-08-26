@@ -10,8 +10,8 @@ describe('POST /api/publishers', () => {
     });
 
     afterEach(async () => {
-       await UserTest.delete();
-       await PublisherTest.delete();
+        await UserTest.delete();
+        await PublisherTest.delete();
     });
 
     it('should failed to add new publisher if request is invalid', async () => {
@@ -146,5 +146,43 @@ describe('PUT /api/publishers', () => {
         logger.debug(response.body);
         expect(response.status).toBe(200);
         expect(response.body.data.location).toBe("updated_location");
+    });
+});
+
+describe('DELETE /api/publishers', () => {
+
+    beforeEach(async () => {
+        await UserTest.create();
+        await PublisherTest.create();
+    });
+
+    afterEach(async () => {
+        await UserTest.delete();
+        await PublisherTest.delete();
+    });
+
+    it('should failed to delete publisher if id is invalid', async () => {
+        const token = await UserTest.getToken();
+
+        const response = await supertest(web)
+            .delete('/api/publishers/id_yang_salah')
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(404);
+        expect(response.body.errors).toBeDefined();
+    });
+
+    it('should success to delete publisher if id is valid', async () => {
+        const token = await UserTest.getToken();
+        const publisher = await PublisherTest.get();
+
+        const response = await supertest(web)
+            .delete(`/api/publishers/${publisher.id}`)
+            .set('Authorization', `Bearer ${token}`);
+
+        logger.debug(response.body);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe("Publisher deleted successfully");
     });
 });
