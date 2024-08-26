@@ -172,6 +172,8 @@ describe('PUT /api/books', () => {
     it('should success to update book if data is valid', async () => {
         const token = await UserTest.getToken();
         const book = await BookTest.get();
+        const author = await AuthorTest.get();
+        const publisher = await PublisherTest.get();
 
         const response = await supertest(web)
             .put(`/api/books/${book.id}`)
@@ -183,6 +185,8 @@ describe('PUT /api/books', () => {
                 overview: "updated_test_overview",
                 isbn: "updated_test_isbn",
                 publicationYear: "2024",
+                publisherId: publisher.id,
+                authorId: author.id
             });
 
         logger.debug(response.body);
@@ -194,5 +198,7 @@ describe('PUT /api/books', () => {
         expect(response.body.data.overview).toBe("updated_test_overview");
         expect(response.body.data.isbn).toBe("updated_test_isbn");
         expect(response.body.data.publicationYear).toBe("2024");
+        expect(response.body.data.publisher.id).toBe(publisher.id);
+        expect(response.body.data.author.id).toBe(author.id);
     });
 });
